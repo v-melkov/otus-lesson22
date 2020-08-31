@@ -1,0 +1,36 @@
+---
+# tasks file for ELK
+- name:    Install Java
+  yum:
+    name:  java-1.8.0-openjdk
+    state: latest
+
+- name:    Install elasticsearch
+  yum:
+    name:  elasticsearch
+    state: latest
+  notify:  elasticsearch start
+
+- name:    Install logstash
+  yum:
+    name:  logstash
+    state: latest
+  notify:  logstash start
+
+- name:    Copy logstash conf files
+  copy:
+    src:   logstash/
+    dest:  /etc/logstash/conf.d/
+  notify:  logstash restart
+
+- name:    Install kibana
+  yum:
+    name:  kibana
+    state: latest
+  notify:  kibana start
+
+- name:    Copy kibana conf file
+  copy:
+    src:   kibana.yml
+    dest:  /etc/kibana/
+  notify:  kibana restart

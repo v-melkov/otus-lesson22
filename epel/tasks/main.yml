@@ -1,0 +1,23 @@
+---
+# tasks file for epel
+- name:           Add repository
+  yum_repository:
+    name:         epel
+    description:  EPEL YUM repo
+    baseurl:      https://download.fedoraproject.org/pub/epel/$releasever/$basearch/
+    gpgcheck:     no
+
+- name:           Import key from url
+  rpm_key:
+    state:        present
+    key:          https://packages.elastic.co/GPG-KEY-elasticsearch
+
+- name:           Add ELK repository
+  yum_repository:
+    name:         elastic-7.x
+    description:  Elastic repository for 7.x packages
+    baseurl:      https://artifacts.elastic.co/packages/7.x/yum
+    gpgcheck:     yes
+    gpgkey:       https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    enabled:      yes
+    state:        present

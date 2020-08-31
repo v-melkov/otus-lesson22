@@ -1,0 +1,27 @@
+---
+- hosts:  all
+  become:
+    true
+  roles:
+    - epel
+
+- hosts:  log
+  become:
+    true
+  roles:
+    - journald
+    - log
+
+
+- hosts:  elk
+  become:
+    true
+  roles:
+    - elk
+
+- hosts:  web
+  become:
+    true
+  roles:
+    - journald
+    - web

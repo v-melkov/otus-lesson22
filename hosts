@@ -1,0 +1,6 @@
+[web]
+192.168.11.101 ansible_ssh_port=22 ansible_ssh_user=vagrant ansible_ssh_private_key_file=.vagrant/machines/web/virtualbox/private_key
+[log]
+192.168.11.102 ansible_ssh_port=22 ansible_ssh_user=vagrant ansible_ssh_private_key_file=.vagrant/machines/log/virtualbox/private_key
+[elk]
+192.168.11.103 ansible_ssh_port=22 ansible_ssh_user=vagrant ansible_ssh_private_key_file=.vagrant/machines/elk/virtualbox/private_key

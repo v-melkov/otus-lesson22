@@ -1,0 +1,87 @@
+---
+# tasks file for nginx
+- name:      Install nginx
+  yum:
+    name:    nginx
+    state:   latest
+  notify:
+    - nginx start
+
+- name:      Replace nginx.conf
+  template:
+    src=templates/nginx.conf.j2
+    dest=/etc/nginx/nginx.conf
+  notify:
+    - nginx reload
+
+- name:      Create directory for logging
+  file:
+    path=/var/log/journal
+    mode=0755
+    owner=root
+    group=root
+    state=directory
+  notify:
+    - journald restart
+
+- name:      Copy journal-upload.conf file
+  copy:
+    src:     journal-upload.conf
+    dest:    /etc/systemd/
+
+- name:      Start journald-upload
+  service:
+    name:    systemd-journal-upload
+    state:   started
+    enabled: yes
+
+- name:      Install audisp-remote
+  yum:
+    name:    audispd-plugins
+    state:   latest
+  notify:
+    - auditd restart
+    - reboot web
+
+- name:      Copy audisp-remote.conf file
+  copy:
+    src:     audisp-remote.conf
+    dest:    /etc/audisp/
+  notify:
+    - auditd restart
+    - reboot web
+
+
+- name:      Copy au-remote.conf file
+  copy:
+    src:     au-remote.conf
+    dest:    /etc/audisp/plugins.d/
+  notify:
+    - auditd restart
+    - reboot web
+
+- name:      Copy nginx.rules for auditd
+  copy:
+    src:     nginx.rules
+    dest:    /etc/audit/rules.d/
+  notify:
+    - auditd restart
+    - reboot web
+
+- name:      Install Java
+  yum:
+    name:    java-1.8.0-openjdk
+    state:   latest
+
+
+- name:      Install filebeat
+  yum:
+    name:    filebeat
+    state:   latest
+  notify:    filebeat start
+
+- name:      Copy filebeat configuration
+  copy:
+    src:     filebeat.yml
+    dest:    /etc/filebeat/
+  notify:    filebeat restart

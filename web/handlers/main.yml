@@ -1,0 +1,40 @@
+---
+# handlers file for nginx
+- name:      nginx start
+  service:
+    name:    nginx
+    enabled: yes
+    state:   started
+- name:      nginx reload
+  service:
+    name:    nginx
+    state:   reloaded
+
+- name:      auditd restart
+  service:
+    name:    auditd
+    state:   restarted
+    use:     service
+
+- name:      journald restart
+  service:
+    name:    systemd-journald
+    state:   restarted
+
+- name:      journald-upload restart
+  service:
+    name:    systemd-journal-upload
+    state:   restarted
+- name:      filebeat start
+  service:
+    name:    filebeat
+    enabled: yes
+    state:   started
+
+- name:      filebeat restart
+  service:
+    name:    filebeat
+    state:   restarted
+
+- name:      reboot web
+  reboot:

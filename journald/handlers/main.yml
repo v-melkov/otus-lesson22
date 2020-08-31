@@ -1,0 +1,7 @@
+---
+# handlers file for journald
+- name:      journald restart
+  service:
+    name:    systemd-journald
+    state:   restarted
+    enabled: yes
